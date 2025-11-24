@@ -11,31 +11,22 @@ export default function HomePage() {
   const [mounted, setMounted] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  console.log("📄 HomePage render");
-
   const { rituals, loading, loadRituals } = useRitualsStore();
   const { notification } = useUIStore();
 
-  console.log("📊 Store state:", { rituals: rituals.length, loading, mounted });
-
   useEffect(() => {
-    console.log("🚀 HomePage useEffect triggered");
     setMounted(true);
     loadRituals().catch((err) => {
-      console.error("❌ loadRituals error:", err);
       setLoadError(err instanceof Error ? err.message : "Unknown error");
     });
   }, [loadRituals]);
 
   // Prevent hydration mismatch
   if (!mounted) {
-    console.log("⏸️ Not mounted yet");
     return (
       <div style={{ width: "100%", height: "100vh", backgroundColor: "#f3f4f6" }} />
     );
   }
-
-  console.log("✅ Mounted! loading =", loading);
 
   if (loadError) {
     return (
@@ -56,7 +47,6 @@ export default function HomePage() {
   }
 
   if (loading) {
-    console.log("⏳ Still loading...");
     return (
       <div
         style={{
@@ -83,8 +73,6 @@ export default function HomePage() {
       </div>
     );
   }
-
-  console.log("✅ Loaded! Rendering main content");
 
   return (
     <div

@@ -77,27 +77,81 @@ export function CreateRitualForm({
   };
 
   return (
-    <div className="h-screen flex flex-col bg-white">
-      <div className="p-4 border-b flex items-center">
-        <button onClick={onCancel} className="p-2 mr-2" disabled={isLoading}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        backgroundColor: "white",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          padding: "16px",
+          borderBottom: "1px solid #e5e7eb",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <button
+          onClick={onCancel}
+          disabled={isLoading}
+          style={{
+            padding: "8px",
+            marginRight: "8px",
+            background: "none",
+            border: "none",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            opacity: isLoading ? 0.5 : 1,
+          }}
+        >
           <ChevronLeft />
         </button>
-        <h2 className="font-bold text-lg">
+        <h2
+          style={{
+            fontWeight: "bold",
+            fontSize: "18px",
+            margin: 0,
+          }}
+        >
           Nouveau Rituel ({step}/3)
         </h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      {/* Content */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "24px",
+        }}
+      >
         {/* Step 1: General Info */}
         {step === 1 && (
-          <div className="space-y-6">
+          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#374151",
+                  marginBottom: "4px",
+                }}
+              >
                 Titre du rituel
               </label>
               <input
                 autoFocus
-                className="w-full border p-3 rounded-lg focus:ring-2 ring-blue-500 outline-none"
+                style={{
+                  width: "100%",
+                  border: "1px solid #d1d5db",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  boxSizing: "border-box",
+                }}
                 placeholder="Ex: Couple, Bilan Hebdo..."
                 value={data.title}
                 onChange={(e) => setData({ ...data, title: e.target.value })}
@@ -105,19 +159,38 @@ export function CreateRitualForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#374151",
+                  marginBottom: "8px",
+                }}
+              >
                 Fréquence
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
                 {FREQUENCIES.map((f) => (
                   <button
                     key={f.value}
                     onClick={() => setData({ ...data, frequency: f.value })}
-                    className={`p-2 rounded-lg text-sm border transition ${
-                      data.frequency === f.value
-                        ? "bg-blue-50 border-blue-500 text-blue-700"
-                        : "border-gray-200"
-                    }`}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      fontSize: "14px",
+                      border:
+                        data.frequency === f.value
+                          ? "2px solid #2563eb"
+                          : "1px solid #d1d5db",
+                      backgroundColor:
+                        data.frequency === f.value ? "#eff6ff" : "white",
+                      color:
+                        data.frequency === f.value ? "#2563eb" : "#6b7280",
+                      cursor: "pointer",
+                      fontWeight: "500",
+                      transition: "all 0.2s",
+                    }}
                   >
                     {f.label}
                   </button>
@@ -126,19 +199,35 @@ export function CreateRitualForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#374151",
+                  marginBottom: "8px",
+                }}
+              >
                 Échelle de notation
               </label>
-              <div className="flex gap-2">
+              <div style={{ display: "flex", gap: "8px" }}>
                 {SCALES.map((s) => (
                   <button
                     key={s}
                     onClick={() => setData({ ...data, scale: s })}
-                    className={`flex-1 p-3 rounded-lg border font-medium transition ${
-                      data.scale === s
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "border-gray-200 hover:border-blue-300"
-                    }`}
+                    style={{
+                      flex: 1,
+                      padding: "12px",
+                      borderRadius: "8px",
+                      border:
+                        data.scale === s ? "none" : "1px solid #d1d5db",
+                      backgroundColor:
+                        data.scale === s ? "#2563eb" : "white",
+                      color: data.scale === s ? "white" : "#111827",
+                      fontWeight: "500",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                    }}
                   >
                     /{s}
                   </button>
@@ -150,13 +239,13 @@ export function CreateRitualForm({
 
         {/* Step 2: Participants */}
         {step === 2 && (
-          <div className="space-y-4">
-            <p className="text-sm text-gray-500 mb-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: "8px" }}>
               Qui participe à ce rituel ?
             </p>
             {data.participants.map((p, idx) => (
-              <div key={p.id} className="flex gap-2 items-center">
-                <div className="relative">
+              <div key={p.id} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <div style={{ position: "relative" }}>
                   <input
                     type="color"
                     value={p.color}
@@ -165,15 +254,26 @@ export function CreateRitualForm({
                       newP[idx].color = e.target.value;
                       setData({ ...data, participants: newP });
                     }}
-                    className="w-10 h-10 rounded-full overflow-hidden border-0 p-0 absolute opacity-0 cursor-pointer"
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      border: "none",
+                      padding: "0",
+                      cursor: "pointer",
+                      boxSizing: "border-box",
+                    }}
                   />
-                  <div
-                    className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-                    style={{ backgroundColor: p.color }}
-                  ></div>
                 </div>
                 <input
-                  className="flex-1 border p-2 rounded-lg"
+                  style={{
+                    flex: 1,
+                    border: "1px solid #d1d5db",
+                    padding: "8px",
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    boxSizing: "border-box",
+                  }}
                   placeholder="Prénom"
                   value={p.name}
                   onChange={(e) => {
@@ -192,7 +292,13 @@ export function CreateRitualForm({
                         ),
                       })
                     }
-                    className="text-red-400 p-2"
+                    style={{
+                      color: "#f87171",
+                      padding: "8px",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
                   >
                     <Trash2 size={18} />
                   </button>
@@ -213,7 +319,21 @@ export function CreateRitualForm({
                   ],
                 })
               }
-              className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 flex items-center justify-center gap-2 hover:bg-gray-50"
+              style={{
+                width: "100%",
+                padding: "12px",
+                border: "2px dashed #d1d5db",
+                borderRadius: "8px",
+                color: "#6b7280",
+                backgroundColor: "white",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                fontSize: "14px",
+                fontWeight: "500",
+              }}
             >
               <Plus size={18} /> Ajouter un participant
             </button>
@@ -222,22 +342,35 @@ export function CreateRitualForm({
 
         {/* Step 3: Questions */}
         {step === 3 && (
-          <div className="space-y-4">
-            <p className="text-sm text-gray-500 mb-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: "8px" }}>
               Quelles questions allez-vous noter ?
             </p>
             {data.questions.map((q, idx) => (
               <div
                 key={q.id}
-                className="flex gap-2 items-center bg-gray-50 p-2 rounded-lg"
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  alignItems: "center",
+                  backgroundColor: "#f9fafb",
+                  padding: "8px",
+                  borderRadius: "8px",
+                }}
               >
-                <div className="flex flex-col gap-1 text-gray-400">
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px", color: "#9ca3af" }}>
                   {idx > 0 && (
                     <button
                       onClick={() => {
                         const newQ = [...data.questions];
                         [newQ[idx], newQ[idx - 1]] = [newQ[idx - 1], newQ[idx]];
                         setData({ ...data, questions: newQ });
+                      }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
                       }}
                     >
                       <MoveUp size={14} />
@@ -250,13 +383,26 @@ export function CreateRitualForm({
                         [newQ[idx], newQ[idx + 1]] = [newQ[idx + 1], newQ[idx]];
                         setData({ ...data, questions: newQ });
                       }}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
+                      }}
                     >
                       <MoveDown size={14} />
                     </button>
                   )}
                 </div>
                 <input
-                  className="flex-1 bg-transparent border-none focus:ring-0 p-0 font-medium"
+                  style={{
+                    flex: 1,
+                    backgroundColor: "transparent",
+                    border: "none",
+                    fontWeight: "500",
+                    fontSize: "14px",
+                    outline: "none",
+                  }}
                   placeholder="Texte de la question..."
                   value={q.text}
                   onChange={(e) => {
@@ -272,7 +418,13 @@ export function CreateRitualForm({
                       questions: data.questions.filter((_, i) => i !== idx),
                     })
                   }
-                  className="text-red-400 p-1"
+                  style={{
+                    color: "#f87171",
+                    padding: "4px",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
                   <Trash2 size={16} />
                 </button>
@@ -292,7 +444,21 @@ export function CreateRitualForm({
                   ],
                 })
               }
-              className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 flex items-center justify-center gap-2 hover:bg-gray-50"
+              style={{
+                width: "100%",
+                padding: "12px",
+                border: "2px dashed #d1d5db",
+                borderRadius: "8px",
+                color: "#6b7280",
+                backgroundColor: "white",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                fontSize: "14px",
+                fontWeight: "500",
+              }}
             >
               <Plus size={18} /> Ajouter une question
             </button>
@@ -300,11 +466,29 @@ export function CreateRitualForm({
         )}
       </div>
 
-      <div className="p-4 border-t bg-gray-50">
+      {/* Footer */}
+      <div
+        style={{
+          padding: "16px",
+          borderTop: "1px solid #e5e7eb",
+          backgroundColor: "#f9fafb",
+        }}
+      >
         <button
           onClick={handleNext}
           disabled={isLoading}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold shadow-lg active:scale-95 transition disabled:opacity-50"
+          style={{
+            width: "100%",
+            backgroundColor: "#2563eb",
+            color: "white",
+            padding: "12px",
+            borderRadius: "8px",
+            fontWeight: "bold",
+            border: "none",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            opacity: isLoading ? 0.6 : 1,
+            fontSize: "16px",
+          }}
         >
           {isLoading
             ? "Création..."

@@ -15,39 +15,104 @@ export function RitualCard({ ritual }: RitualCardProps) {
   const status = getRelativeDateStatus(lastEntry?.createdAt, ritual.frequency);
 
   return (
-    <Link href={`/rituals/${ritual.id}`}>
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="font-bold text-lg text-gray-800">{ritual.title}</h3>
+    <Link href={`/rituals/${ritual.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+      <div style={{
+        backgroundColor: "white",
+        padding: "16px",
+        borderRadius: "12px",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        border: "1px solid #e5e7eb",
+        cursor: "pointer",
+        transition: "all 0.2s",
+      }}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: "8px",
+        }}>
+          <h3 style={{
+            fontWeight: "bold",
+            fontSize: "18px",
+            color: "#1f2937",
+            margin: 0,
+          }}>
+            {ritual.title}
+          </h3>
           {status.isDue && (
-            <span className="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
+            <span style={{
+              backgroundColor: "#fee2e2",
+              color: "#b91c1c",
+              fontSize: "12px",
+              paddingLeft: "8px",
+              paddingRight: "8px",
+              paddingTop: "4px",
+              paddingBottom: "4px",
+              borderRadius: "9999px",
+              fontWeight: "500",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              whiteSpace: "nowrap",
+            }}>
               <AlertCircle size={12} /> À faire
             </span>
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+          marginBottom: "12px",
+        }}>
           {ritual.participants.map((p) => (
             <span
               key={p.id}
-              className="text-xs px-2 py-0.5 rounded-md bg-gray-100 border text-gray-600 flex items-center gap-1"
+              style={{
+                fontSize: "12px",
+                paddingLeft: "8px",
+                paddingRight: "8px",
+                paddingTop: "2px",
+                paddingBottom: "2px",
+                borderRadius: "6px",
+                backgroundColor: "#f3f4f6",
+                border: "1px solid #e5e7eb",
+                color: "#4b5563",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+              }}
             >
               <span
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: p.color }}
-              ></span>
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: p.color,
+                }}
+              />
               {p.name}
             </span>
           ))}
         </div>
 
-        <div className="flex items-center justify-between text-xs text-gray-500 mt-2 pt-2 border-t">
-          <div className="flex gap-3">
-            <span className="flex items-center gap-1">
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          fontSize: "12px",
+          color: "#6b7280",
+          marginTop: "8px",
+          paddingTop: "8px",
+          borderTop: "1px solid #e5e7eb",
+        }}>
+          <div style={{ display: "flex", gap: "12px" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
               <Calendar size={12} />
               {FREQUENCIES.find((f) => f.value === ritual.frequency)?.label}
             </span>
-            <span className="flex items-center gap-1">
+            <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
               <BarChart2 size={12} /> /{ritual.scale}
             </span>
           </div>

@@ -36,7 +36,12 @@ export default function RitualDetailPage() {
 
   if (!ritual) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}>
         Rituel non trouvé
       </div>
     );
@@ -75,54 +80,139 @@ export default function RitualDetailPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white max-w-md mx-auto">
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      height: "100vh",
+      backgroundColor: "white",
+      maxWidth: "448px",
+      margin: "0 auto",
+    }}>
       {/* Header */}
-      <div className="p-4 border-b flex items-center justify-between sticky top-0 bg-white/90 backdrop-blur z-20">
-        <button onClick={() => router.back()} className="p-2 -ml-2 text-gray-600">
+      <div style={{
+        padding: "16px",
+        borderBottom: "1px solid #e5e7eb",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "sticky",
+        top: 0,
+        backgroundColor: "white",
+        zIndex: 20,
+      }}>
+        <button
+          onClick={() => router.back()}
+          style={{
+            padding: "8px",
+            marginLeft: "-8px",
+            backgroundColor: "transparent",
+            border: "none",
+            cursor: "pointer",
+            color: "#4b5563",
+          }}
+        >
           <ChevronLeft />
         </button>
-        <div className="text-center">
-          <h2 className="font-bold text-lg">{ritual.title}</h2>
-          <p className="text-xs text-gray-500">
+        <div style={{ textAlign: "center" }}>
+          <h2 style={{
+            fontWeight: "bold",
+            fontSize: "18px",
+            margin: 0,
+            color: "#111827",
+          }}>
+            {ritual.title}
+          </h2>
+          <p style={{
+            fontSize: "12px",
+            color: "#6b7280",
+            margin: "4px 0 0 0",
+          }}>
             {ritual.frequency} • Échelle /{ritual.scale}
           </p>
         </div>
         <button
           onClick={handleDeleteRitual}
           disabled={loading}
-          className="p-2 -mr-2 text-red-400 disabled:opacity-50"
+          style={{
+            padding: "8px",
+            marginRight: "-8px",
+            backgroundColor: "transparent",
+            border: "none",
+            cursor: loading ? "not-allowed" : "pointer",
+            color: "#f87171",
+            opacity: loading ? 0.5 : 1,
+          }}
         >
           <Trash2 size={20} />
         </button>
       </div>
 
       {/* Action Button */}
-      <div className="p-4 pb-0 bg-gray-50 border-b">
+      <div style={{
+        padding: "16px",
+        paddingBottom: 0,
+        backgroundColor: "#f3f4f6",
+        borderBottom: "1px solid #e5e7eb",
+      }}>
         <Link
           href={`/rituals/${ritual.id}/answer`}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md mb-4 flex items-center justify-center gap-2"
+          style={{
+            width: "100%",
+            backgroundColor: "#2563eb",
+            color: "white",
+            fontWeight: "bold",
+            padding: "12px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+            marginBottom: "16px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            textDecoration: "none",
+          }}
         >
           <Plus size={20} /> Répondre maintenant
         </Link>
 
         {/* Tabs */}
-        <div className="flex gap-4 border-b">
+        <div style={{ display: "flex", gap: "16px", borderBottom: "1px solid #e5e7eb" }}>
           <button
-            className={`pb-2 px-2 text-sm font-medium border-b-2 transition ${
-              activeTab === "history"
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-gray-500"
-            }`}
+            style={{
+              paddingBottom: "8px",
+              paddingLeft: "8px",
+              paddingRight: "8px",
+              fontSize: "14px",
+              fontWeight: "500",
+              borderTop: "none",
+              borderRight: "none",
+              borderLeft: "none",
+              borderBottom: activeTab === "history" ? "2px solid #2563eb" : "2px solid transparent",
+              backgroundColor: "transparent",
+              cursor: "pointer",
+              color: activeTab === "history" ? "#2563eb" : "#6b7280",
+              transition: "all 0.2s",
+            }}
             onClick={() => setActiveTab("history")}
           >
             Historique
           </button>
           <button
-            className={`pb-2 px-2 text-sm font-medium border-b-2 transition ${
-              activeTab === "stats"
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-gray-500"
-            }`}
+            style={{
+              paddingBottom: "8px",
+              paddingLeft: "8px",
+              paddingRight: "8px",
+              fontSize: "14px",
+              fontWeight: "500",
+              borderTop: "none",
+              borderRight: "none",
+              borderLeft: "none",
+              borderBottom: activeTab === "stats" ? "2px solid #2563eb" : "2px solid transparent",
+              backgroundColor: "transparent",
+              cursor: "pointer",
+              color: activeTab === "stats" ? "#2563eb" : "#6b7280",
+              transition: "all 0.2s",
+            }}
             onClick={() => setActiveTab("stats")}
           >
             Graphiques
@@ -131,11 +221,20 @@ export default function RitualDetailPage() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
+      <div style={{
+        flex: 1,
+        overflowY: "auto",
+        backgroundColor: "#f3f4f6",
+        padding: "16px",
+      }}>
         {activeTab === "history" && (
-          <div className="space-y-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             {ritual.entries.length === 0 && (
-              <p className="text-center text-gray-400 mt-10">
+              <p style={{
+                textAlign: "center",
+                color: "#9ca3af",
+                marginTop: "40px",
+              }}>
                 Aucune entrée pour le moment.
               </p>
             )}
@@ -146,26 +245,66 @@ export default function RitualDetailPage() {
               ).toFixed(1);
 
               return (
-                <div key={entry.id} className="bg-white p-4 rounded-xl shadow-sm border">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="font-bold text-gray-700">
+                <div
+                  key={entry.id}
+                  style={{
+                    backgroundColor: "white",
+                    padding: "16px",
+                    borderRadius: "12px",
+                    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                    border: "1px solid #e5e7eb",
+                  }}
+                >
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "12px",
+                  }}>
+                    <span style={{
+                      fontWeight: "bold",
+                      color: "#374151",
+                    }}>
                       {formatDate(entry.createdAt)}
                     </span>
-                    <span className="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">
+                    <span style={{
+                      backgroundColor: "#dbeafe",
+                      color: "#1e40af",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      paddingLeft: "8px",
+                      paddingRight: "8px",
+                      paddingTop: "4px",
+                      paddingBottom: "4px",
+                      borderRadius: "4px",
+                    }}>
                       Moy: {totalAvg}
                     </span>
                   </div>
 
-                  <div className="space-y-2 mb-3">
-                    {ritual.questions.map((q) => (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "12px" }}>
+                    {ritual.questions.map((q, qIdx) => (
                       <div
                         key={q.id}
-                        className="flex items-center text-sm border-b border-dashed border-gray-100 pb-1 last:border-0"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          fontSize: "14px",
+                          borderBottom: qIdx < ritual.questions.length - 1 ? "1px dashed #e5e7eb" : "none",
+                          paddingBottom: "8px",
+                        }}
                       >
-                        <span className="flex-1 text-gray-600 truncate mr-2">
+                        <span style={{
+                          flex: 1,
+                          color: "#4b5563",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          marginRight: "8px",
+                        }}>
                           {q.text}
                         </span>
-                        <div className="flex gap-1">
+                        <div style={{ display: "flex", gap: "4px" }}>
                           {ritual.participants.map((p) => {
                             const r = entry.responses.find(
                               (res) =>
@@ -175,8 +314,18 @@ export default function RitualDetailPage() {
                             return (
                               <span
                                 key={p.id}
-                                className="w-6 h-6 rounded flex items-center justify-center text-xs text-white font-medium"
-                                style={{ backgroundColor: p.color }}
+                                style={{
+                                  width: "24px",
+                                  height: "24px",
+                                  borderRadius: "4px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontSize: "12px",
+                                  color: "white",
+                                  fontWeight: "500",
+                                  backgroundColor: p.color,
+                                }}
                               >
                                 {r ? r.value : "-"}
                               </span>
@@ -187,17 +336,32 @@ export default function RitualDetailPage() {
                     ))}
                   </div>
 
-                  <div className="flex gap-2">
+                  <div style={{ display: "flex", gap: "8px" }}>
                     <Link
                       href={`/rituals/${ritual.id}/entries/${entry.id}`}
-                      className="text-xs text-blue-500 hover:text-blue-700 flex-1"
+                      style={{
+                        fontSize: "12px",
+                        color: "#3b82f6",
+                        flex: 1,
+                        textDecoration: "none",
+                      }}
                     >
                       Voir détails
                     </Link>
                     <button
                       onClick={() => handleDeleteEntry(entry.id)}
                       disabled={loading}
-                      className="text-xs text-red-400 hover:text-red-600 flex items-center gap-1 disabled:opacity-50"
+                      style={{
+                        fontSize: "12px",
+                        color: "#f87171",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        cursor: loading ? "not-allowed" : "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        opacity: loading ? 0.5 : 1,
+                      }}
                     >
                       <Trash2 size={12} /> Supprimer
                     </button>
@@ -210,9 +374,26 @@ export default function RitualDetailPage() {
 
         {activeTab === "stats" && (
           <div>
-            <div className="bg-white p-3 rounded-lg shadow-sm mb-4 space-y-3">
+            <div style={{
+              backgroundColor: "white",
+              padding: "12px",
+              borderRadius: "8px",
+              boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+              marginBottom: "16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}>
               <select
-                className="w-full p-2 border rounded bg-gray-50 text-sm"
+                style={{
+                  width: "100%",
+                  padding: "8px",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "4px",
+                  backgroundColor: "#f3f4f6",
+                  fontSize: "14px",
+                  boxSizing: "border-box",
+                }}
                 value={graphMode}
                 onChange={(e) => setGraphMode(Number(e.target.value) as 1 | 2 | 3 | 4)}
               >
@@ -224,7 +405,15 @@ export default function RitualDetailPage() {
 
               {(graphMode === 1 || graphMode === 3) && (
                 <select
-                  className="w-full p-2 border rounded bg-gray-50 text-sm"
+                  style={{
+                    width: "100%",
+                    padding: "8px",
+                    border: "1px solid #d1d5db",
+                    borderRadius: "4px",
+                    backgroundColor: "#f3f4f6",
+                    fontSize: "14px",
+                    boxSizing: "border-box",
+                  }}
                   value={selectedQuestionId}
                   onChange={(e) => setSelectedQuestionId(e.target.value)}
                 >

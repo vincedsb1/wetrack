@@ -78,57 +78,129 @@ export function AnswerWizard({
   const currentValue = responses[currentKey];
 
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div style={{
+      height: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      backgroundColor: "white",
+    }}>
       {/* Progress Bar */}
-      <div className="h-1 bg-gray-100 w-full">
+      <div style={{
+        height: "4px",
+        backgroundColor: "#f3f4f6",
+        width: "100%",
+      }}>
         <div
-          className="h-full bg-blue-600 transition-all duration-300"
-          style={{ width: `${progress}%` }}
-        ></div>
+          style={{
+            height: "100%",
+            backgroundColor: "#2563eb",
+            transition: "width 0.3s ease-in-out",
+            width: `${progress}%`,
+          }}
+        />
       </div>
 
-      <div className="p-4 flex items-center justify-between">
+      <div style={{
+        padding: "16px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}>
         <button
           onClick={currentStepIndex === 0 ? onCancel : handlePrev}
-          className="text-gray-400 disabled:opacity-50"
+          style={{
+            backgroundColor: "transparent",
+            border: "none",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            color: "#9ca3af",
+            opacity: isLoading ? 0.5 : 1,
+            padding: "0",
+          }}
           disabled={isLoading}
         >
           <ChevronLeft />
         </button>
-        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+        <span style={{
+          fontSize: "12px",
+          fontWeight: "bold",
+          color: "#9ca3af",
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+        }}>
           {currentStepIndex + 1} / {steps.length}
         </span>
-        <div className="w-6"></div>
+        <div style={{ width: "24px" }}></div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6 text-center animate-in fade-in zoom-in duration-300">
-        <div className="mb-6">
+      <div style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px",
+        textAlign: "center",
+      }}>
+        <div style={{ marginBottom: "24px" }}>
           <span
-            className="inline-block px-3 py-1 rounded-full text-sm font-bold mb-4 text-white shadow-sm"
-            style={{ backgroundColor: currentStep.participant.color }}
+            style={{
+              display: "inline-block",
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "4px",
+              paddingBottom: "4px",
+              borderRadius: "9999px",
+              fontSize: "14px",
+              fontWeight: "bold",
+              marginBottom: "16px",
+              color: "white",
+              boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+              backgroundColor: currentStep.participant.color,
+            }}
           >
             {currentStep.participant.name}
           </span>
-          <h2 className="text-2xl font-bold text-gray-800 leading-tight">
+          <h2 style={{
+            fontSize: "28px",
+            fontWeight: "bold",
+            color: "#1f2937",
+            lineHeight: 1.3,
+            margin: 0,
+          }}>
             {currentStep.question.text}
           </h2>
         </div>
 
         {/* Rating Grid */}
-        <div className="grid grid-cols-5 gap-3 w-full max-w-xs">
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${Math.min(5, ritual.scale)}, 1fr)`,
+          gap: "12px",
+          width: "100%",
+          maxWidth: "320px",
+        }}>
           {Array.from({ length: ritual.scale }, (_, i) => i + 1).map((val) => (
             <button
               key={val}
               onClick={() => handleValueSelect(val)}
               disabled={isLoading}
-              className={`
-                aspect-square rounded-xl text-lg font-bold border-2 transition-all disabled:opacity-50
-                ${
-                  currentValue === val
-                    ? "bg-blue-600 border-blue-600 text-white scale-110 shadow-lg"
-                    : "border-gray-200 text-gray-600 hover:border-blue-300 hover:bg-blue-50"
-                }
-              `}
+              style={{
+                aspectRatio: "1",
+                borderRadius: "12px",
+                fontSize: "18px",
+                fontWeight: "bold",
+                borderTop: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                borderRight: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                borderBottom: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                borderLeft: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                transition: "all 0.2s",
+                opacity: isLoading ? 0.5 : 1,
+                cursor: isLoading ? "not-allowed" : "pointer",
+                backgroundColor: currentValue === val ? "#2563eb" : "white",
+                color: currentValue === val ? "white" : "#4b5563",
+                transform: currentValue === val ? "scale(1.1)" : "scale(1)",
+                boxShadow: currentValue === val ? "0 10px 15px -3px rgba(0, 0, 0, 0.1)" : "none",
+              }}
             >
               {val}
             </button>

@@ -18,7 +18,12 @@ export default function AnswerPage() {
 
   if (!ritual) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}>
         Rituel non trouvé
       </div>
     );
