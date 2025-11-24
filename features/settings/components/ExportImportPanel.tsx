@@ -35,31 +35,80 @@ export function ExportImportPanel({
   };
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {/* Export Section */}
-      <div className="bg-white p-6 rounded-xl shadow-sm border">
-        <h3 className="font-bold mb-2 flex items-center gap-2">
+      <div style={{
+        backgroundColor: "white",
+        padding: "24px",
+        borderRadius: "12px",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        border: "1px solid #e5e7eb",
+      }}>
+        <h3 style={{
+          fontWeight: "bold",
+          marginBottom: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          margin: 0,
+          color: "#111827",
+        }}>
           <Download size={18} /> Exporter
         </h3>
-        <p className="text-sm text-gray-500 mb-4">
+        <p style={{
+          fontSize: "14px",
+          color: "#6b7280",
+          marginBottom: "16px",
+          margin: "8px 0 16px 0",
+        }}>
           Téléchargez une sauvegarde complète de vos rituels et historiques au
           format JSON.
         </p>
         <button
           onClick={handleExport}
           disabled={isLoading}
-          className="w-full bg-gray-900 text-white py-2 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50"
+          style={{
+            width: "100%",
+            backgroundColor: "#111827",
+            color: "white",
+            padding: "8px",
+            borderRadius: "8px",
+            fontWeight: "500",
+            border: "none",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            opacity: isLoading ? 0.5 : 1,
+            transition: "background-color 0.2s",
+          }}
         >
           Télécharger la sauvegarde
         </button>
       </div>
 
       {/* Import Section */}
-      <div className="bg-white p-6 rounded-xl shadow-sm border">
-        <h3 className="font-bold mb-2 flex items-center gap-2">
+      <div style={{
+        backgroundColor: "white",
+        padding: "24px",
+        borderRadius: "12px",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        border: "1px solid #e5e7eb",
+      }}>
+        <h3 style={{
+          fontWeight: "bold",
+          marginBottom: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          margin: 0,
+          color: "#111827",
+        }}>
           <Upload size={18} /> Importer
         </h3>
-        <p className="text-sm text-gray-500 mb-4">
+        <p style={{
+          fontSize: "14px",
+          color: "#6b7280",
+          marginBottom: "16px",
+          margin: "8px 0 16px 0",
+        }}>
           Restaurez une sauvegarde ou fusionnez des données depuis un autre
           appareil.
         </p>
@@ -67,22 +116,42 @@ export function ExportImportPanel({
           type="file"
           accept=".json"
           ref={fileInputRef}
-          className="hidden"
+          style={{ display: "none" }}
           onChange={handleFileChange}
           disabled={isLoading}
         />
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={isLoading}
-          className="w-full border-2 border-gray-900 text-gray-900 py-2 rounded-lg font-medium hover:bg-gray-50 disabled:opacity-50"
+          style={{
+            width: "100%",
+            borderTop: "2px solid #111827",
+            borderRight: "2px solid #111827",
+            borderBottom: "2px solid #111827",
+            borderLeft: "2px solid #111827",
+            color: "#111827",
+            padding: "8px",
+            borderRadius: "8px",
+            fontWeight: "500",
+            backgroundColor: "white",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            opacity: isLoading ? 0.5 : 1,
+            transition: "background-color 0.2s",
+          }}
         >
           Sélectionner un fichier
         </button>
       </div>
 
-      <div className="p-4 text-center text-xs text-gray-400 mt-8">
-        <p>Rituels de notes v1.0</p>
-        <p>Données stockées localement sur votre appareil.</p>
+      <div style={{
+        padding: "16px",
+        textAlign: "center",
+        fontSize: "12px",
+        color: "#9ca3af",
+        marginTop: "32px",
+      }}>
+        <p style={{ margin: "0 0 4px 0" }}>WeTrack v1.0</p>
+        <p style={{ margin: 0 }}>Données stockées localement sur votre appareil.</p>
       </div>
     </div>
   );

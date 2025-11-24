@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft } from "lucide-react";
 import type { Ritual, Entry, Response } from "@/lib/types";
 
@@ -9,6 +11,7 @@ const generateUUID = () => crypto.randomUUID();
 interface WizardStep {
   question: Ritual["questions"][0];
   participant: Ritual["participants"][0];
+  questionIndex: number;
 }
 
 interface AnswerWizardProps {
@@ -26,9 +29,9 @@ export function AnswerWizard({
 }: AnswerWizardProps) {
   const steps = useMemo<WizardStep[]>(() => {
     const s: WizardStep[] = [];
-    ritual.questions.forEach((q) => {
+    ritual.questions.forEach((q, qIdx) => {
       ritual.participants.forEach((p) => {
-        s.push({ question: q, participant: p });
+        s.push({ question: q, participant: p, questionIndex: qIdx });
       });
     });
     return s;
@@ -78,19 +81,96 @@ export function AnswerWizard({
   const currentValue = responses[currentKey];
 
   return (
-    <div style={{
+    <div id="answerWizardContainer" style={{
       height: "100vh",
       display: "flex",
       flexDirection: "column",
       backgroundColor: "white",
     }}>
+      {/* Header */}
+      <div
+        id="answerWizardHeader"
+        style={{
+          padding: "16px 24px",
+          borderBottom: "1px solid #e5e7eb",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: "white",
+        }}
+      >
+        <Link
+          id="answerWizardLogoLink"
+          href="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            textDecoration: "none",
+            cursor: "pointer",
+          }}
+          title="Retour à l'accueil"
+        >
+          <div
+            id="answerWizardLogoContainer"
+            style={{
+              borderRadius: "8px",
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              id="answerWizardLogoImage"
+              src="/icon.svg"
+              alt="Rituels de Notes"
+              width={32}
+              height={32}
+              priority
+            />
+          </div>
+          <span
+            id="answerWizardLogoText"
+            style={{
+              fontSize: "18px",
+              fontWeight: "bold",
+              color: "#2563eb",
+              marginTop: "2px",
+            }}
+          >
+            WeTrack
+          </span>
+        </Link>
+        <button
+          id="answerWizardPrevButton"
+          onClick={currentStepIndex === 0 ? onCancel : handlePrev}
+          style={{
+            backgroundColor: "transparent",
+            border: "none",
+            cursor: isLoading ? "not-allowed" : "pointer",
+            color: "#9ca3af",
+            opacity: isLoading ? 0.5 : 1,
+            padding: "8px",
+          }}
+          disabled={isLoading}
+          title={currentStepIndex === 0 ? "Annuler" : "Précédent"}
+        >
+          <ChevronLeft size={20} />
+        </button>
+      </div>
+
       {/* Progress Bar */}
-      <div style={{
-        height: "4px",
-        backgroundColor: "#f3f4f6",
-        width: "100%",
-      }}>
+      <div
+        id="answerWizardProgressBarContainer"
+        style={{
+          height: "4px",
+          backgroundColor: "#f3f4f6",
+          width: "100%",
+        }}
+      >
         <div
+          id="answerWizardProgressBarFill"
           style={{
             height: "100%",
             backgroundColor: "#2563eb",
@@ -100,49 +180,61 @@ export function AnswerWizard({
         />
       </div>
 
-      <div style={{
-        padding: "16px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}>
-        <button
-          onClick={currentStepIndex === 0 ? onCancel : handlePrev}
-          style={{
-            backgroundColor: "transparent",
-            border: "none",
-            cursor: isLoading ? "not-allowed" : "pointer",
-            color: "#9ca3af",
-            opacity: isLoading ? 0.5 : 1,
-            padding: "0",
-          }}
-          disabled={isLoading}
+      <div
+        id="answerWizardContent"
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px",
+        }}
+      >
+        <div
+          id="answerWizardQuestionContainer"
+          style={{ marginBottom: "24px", width: "100%", textAlign: "left" }}
         >
-          <ChevronLeft />
-        </button>
-        <span style={{
-          fontSize: "12px",
-          fontWeight: "bold",
-          color: "#9ca3af",
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-        }}>
-          {currentStepIndex + 1} / {steps.length}
-        </span>
-        <div style={{ width: "24px" }}></div>
-      </div>
-
-      <div style={{
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        textAlign: "center",
-      }}>
-        <div style={{ marginBottom: "24px" }}>
+          <div id="answerWizardQuestionHeader" style={{ marginBottom: "12px" }}>
+            <span
+              id="answerWizardQuestionNumber"
+              style={{
+                fontSize: "14px",
+                fontWeight: "600",
+                color: "#6b7280",
+              }}
+            >
+              Question {currentStep.questionIndex + 1} / {ritual.questions.length}
+            </span>
+          </div>
+          <h2
+            id="answerWizardQuestionText"
+            style={{
+              fontSize: "28px",
+              fontWeight: "bold",
+              color: "#1f2937",
+              lineHeight: 1.3,
+              margin: "0 0 12px 0",
+            }}
+          >
+            {currentStep.question.text}
+          </h2>
+          {currentStep.question.details && (
+            <p
+              id="answerWizardQuestionDetails"
+              style={{
+                fontSize: "13px",
+                color: "#6b7280",
+                margin: "0 0 16px 0",
+                fontStyle: "italic",
+                lineHeight: 1.4,
+              }}
+            >
+              {currentStep.question.details}
+            </p>
+          )}
           <span
+            id="answerWizardParticipantBadge"
             style={{
               display: "inline-block",
               paddingLeft: "12px",
@@ -152,7 +244,7 @@ export function AnswerWizard({
               borderRadius: "9999px",
               fontSize: "14px",
               fontWeight: "bold",
-              marginBottom: "16px",
+              marginTop: "8px",
               color: "white",
               boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
               backgroundColor: currentStep.participant.color,
@@ -160,27 +252,22 @@ export function AnswerWizard({
           >
             {currentStep.participant.name}
           </span>
-          <h2 style={{
-            fontSize: "28px",
-            fontWeight: "bold",
-            color: "#1f2937",
-            lineHeight: 1.3,
-            margin: 0,
-          }}>
-            {currentStep.question.text}
-          </h2>
         </div>
 
         {/* Rating Grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${Math.min(5, ritual.scale)}, 1fr)`,
-          gap: "12px",
-          width: "100%",
-          maxWidth: "320px",
-        }}>
+        <div
+          id="answerWizardRatingGrid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${Math.min(5, ritual.scale)}, 1fr)`,
+            gap: "12px",
+            width: "100%",
+            maxWidth: "320px",
+          }}
+        >
           {Array.from({ length: ritual.scale }, (_, i) => i + 1).map((val) => (
             <button
+              id={`answerWizardRatingButton${val}`}
               key={val}
               onClick={() => handleValueSelect(val)}
               disabled={isLoading}

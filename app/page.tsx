@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Settings } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useRitualsStore } from "@/store/rituals.store";
 import { useUIStore } from "@/store/ui.store";
 import { RitualCard } from "@/features/rituals/components/RitualCard";
+import { Header } from "@/features/layout/components/Header";
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
@@ -108,17 +109,13 @@ export default function HomePage() {
       )}
 
       {/* Header */}
-      <header
+      <Header showSettings={true} />
+
+      {/* Title */}
+      <div
         style={{
-          backgroundColor: "white",
-          padding: "24px",
-          borderBottom: "1px solid #e5e7eb",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
+          padding: "24px 16px 0",
+          backgroundColor: "#f3f4f6",
         }}
       >
         <h1
@@ -126,23 +123,13 @@ export default function HomePage() {
             fontSize: "28px",
             fontWeight: "bold",
             color: "#111827",
+            margin: 0,
+            marginBottom: "16px",
           }}
         >
           Mes Rituels
         </h1>
-        <Link
-          href="/settings"
-          style={{
-            padding: "8px",
-            backgroundColor: "#f3f4f6",
-            borderRadius: "9999px",
-            cursor: "pointer",
-            display: "inline-block",
-          }}
-        >
-          <Settings size={20} />
-        </Link>
-      </header>
+      </div>
 
       {/* Main Content */}
       <main

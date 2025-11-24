@@ -2,6 +2,7 @@
 
 import { Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/date";
+import { Header } from "@/features/layout/components/Header";
 import type { Ritual, Entry } from "@/lib/types";
 
 interface EntryDetailTableProps {
@@ -23,6 +24,8 @@ export function EntryDetailTable({
 
   return (
     <div className="flex flex-col h-screen bg-white">
+      <Header showSettings={false} />
+
       <div className="p-4 border-b sticky top-0 bg-white">
         <h2 className="font-bold text-lg">{formatDate(entry.createdAt)}</h2>
         <p className="text-xs text-gray-500">{ritual.title}</p>

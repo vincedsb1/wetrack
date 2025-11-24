@@ -14,13 +14,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rituels de Notes",
+  title: "WeTrack",
   description: "Suivi des rituels avec notes et graphiques",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Rituels",
+    title: "WeTrack",
   },
   formatDetection: {
     telephone: false,

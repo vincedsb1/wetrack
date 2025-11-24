@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
 import { useRitualsStore } from "@/store/rituals.store";
 import { useUIStore } from "@/store/ui.store";
 import { ExportImportPanel } from "@/features/settings/components/ExportImportPanel";
 import { generateExportData, downloadExport, validateImportFile } from "@/lib/export-import";
+import { Header } from "@/features/layout/components/Header";
 import type { ExportData } from "@/lib/types";
 
 export default function SettingsPage() {
@@ -41,23 +41,45 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 max-w-md mx-auto">
-      <div className="flex items-center mb-6">
-        <button
-          onClick={() => router.back()}
-          className="bg-white p-2 rounded-full shadow-sm mr-4"
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      minHeight: "100vh",
+      backgroundColor: "#f3f4f6",
+      maxWidth: "448px",
+      margin: "0 auto",
+    }}>
+      {/* Header */}
+      <Header showSettings={false} />
+
+      {/* Title */}
+      <div
+        style={{
+          padding: "24px 16px",
+          backgroundColor: "#f3f4f6",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "20px",
+            fontWeight: "bold",
+            margin: 0,
+            color: "#111827",
+          }}
         >
-          <ChevronLeft />
-        </button>
-        <h2 className="text-xl font-bold">Paramètres & Données</h2>
+          Paramètres & Données
+        </h2>
       </div>
 
-      <ExportImportPanel
-        rituals={rituals}
-        onExport={handleExport}
-        onImport={handleImport}
-        isLoading={loading}
-      />
+      {/* Content */}
+      <div style={{ padding: "16px" }}>
+        <ExportImportPanel
+          rituals={rituals}
+          onExport={handleExport}
+          onImport={handleImport}
+          isLoading={loading}
+        />
+      </div>
     </div>
   );
 }

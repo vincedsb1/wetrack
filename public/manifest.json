@@ -1,6 +1,6 @@
 {
-  "name": "Rituels de Notes",
-  "short_name": "Rituels",
+  "name": "WeTrack",
+  "short_name": "WeTrack",
   "description": "Suivi des rituels avec notes et graphiques",
   "start_url": "/",
   "display": "standalone",

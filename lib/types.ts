@@ -15,6 +15,7 @@ export interface Participant {
 export interface Question {
   id: string; // UUID
   text: string;
+  details?: string; // Optional detailed description
   order: number;
 }
 

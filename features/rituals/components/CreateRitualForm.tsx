@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { COLORS, FREQUENCIES, SCALES } from "@/lib/constants";
+import type { Participant, Question, Ritual } from "@/lib/types";
 import { ChevronLeft, MoveDown, MoveUp, Plus, Trash2 } from "lucide-react";
-import { SCALES, FREQUENCIES, COLORS } from "@/lib/constants";
-import type { Ritual, Question, Participant } from "@/lib/types";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 const generateUUID = () => crypto.randomUUID();
 
@@ -42,8 +44,7 @@ export function CreateRitualForm({
       );
     if (step === 3)
       return (
-        data.questions.length >= 1 &&
-        data.questions.every((q) => q.text.trim())
+        data.questions.length >= 1 && data.questions.every((q) => q.text.trim())
       );
     return true;
   };
@@ -88,35 +89,84 @@ export function CreateRitualForm({
       {/* Header */}
       <div
         style={{
-          padding: "16px",
+          padding: "16px 24px",
           borderBottom: "1px solid #e5e7eb",
           display: "flex",
+          justifyContent: "space-between",
           alignItems: "center",
+          backgroundColor: "white",
         }}
       >
-        <button
-          onClick={onCancel}
-          disabled={isLoading}
+        <Link
+          href="/"
           style={{
-            padding: "8px",
-            marginRight: "8px",
-            background: "none",
-            border: "none",
-            cursor: isLoading ? "not-allowed" : "pointer",
-            opacity: isLoading ? 0.5 : 1,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            textDecoration: "none",
+            cursor: "pointer",
+          }}
+          title="Retour à l'accueil"
+        >
+          <div
+            style={{
+              borderRadius: "8px",
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              src="/icon.svg"
+              alt="Rituels de Notes"
+              width={32}
+              height={32}
+              priority
+            />
+          </div>
+          <span
+            style={{
+              fontSize: "18px",
+              fontWeight: "bold",
+              color: "#2563eb",
+              marginTop: "2px",
+            }}
+          >
+            WeTrack
+          </span>
+        </Link>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
           }}
         >
-          <ChevronLeft />
-        </button>
-        <h2
-          style={{
-            fontWeight: "bold",
-            fontSize: "18px",
-            margin: 0,
-          }}
-        >
-          Nouveau Rituel ({step}/3)
-        </h2>
+          <span
+            style={{
+              fontSize: "14px",
+              color: "#6b7280",
+              fontWeight: "500",
+            }}
+          >
+            Étape {step}/4
+          </span>
+          <button
+            onClick={onCancel}
+            disabled={isLoading}
+            style={{
+              padding: "8px",
+              background: "none",
+              border: "none",
+              cursor: isLoading ? "not-allowed" : "pointer",
+              opacity: isLoading ? 0.5 : 1,
+            }}
+            title="Annuler"
+          >
+            <ChevronLeft size={20} />
+          </button>
+        </div>
       </div>
 
       {/* Content */}
@@ -129,7 +179,9 @@ export function CreateRitualForm({
       >
         {/* Step 1: General Info */}
         {step === 1 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+          >
             <div>
               <label
                 style={{
@@ -170,7 +222,13 @@ export function CreateRitualForm({
               >
                 Fréquence
               </label>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "8px",
+                }}
+              >
                 {FREQUENCIES.map((f) => (
                   <button
                     key={f.value}
@@ -185,8 +243,7 @@ export function CreateRitualForm({
                           : "1px solid #d1d5db",
                       backgroundColor:
                         data.frequency === f.value ? "#eff6ff" : "white",
-                      color:
-                        data.frequency === f.value ? "#2563eb" : "#6b7280",
+                      color: data.frequency === f.value ? "#2563eb" : "#6b7280",
                       cursor: "pointer",
                       fontWeight: "500",
                       transition: "all 0.2s",
@@ -219,10 +276,8 @@ export function CreateRitualForm({
                       flex: 1,
                       padding: "12px",
                       borderRadius: "8px",
-                      border:
-                        data.scale === s ? "none" : "1px solid #d1d5db",
-                      backgroundColor:
-                        data.scale === s ? "#2563eb" : "white",
+                      border: data.scale === s ? "none" : "1px solid #d1d5db",
+                      backgroundColor: data.scale === s ? "#2563eb" : "white",
                       color: data.scale === s ? "white" : "#111827",
                       fontWeight: "500",
                       cursor: "pointer",
@@ -239,32 +294,43 @@ export function CreateRitualForm({
 
         {/* Step 2: Participants */}
         {step === 2 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: "8px" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <p
+              style={{
+                fontSize: "14px",
+                color: "#6b7280",
+                marginBottom: "8px",
+              }}
+            >
               Qui participe à ce rituel ?
             </p>
             {data.participants.map((p, idx) => (
-              <div key={p.id} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                <div style={{ position: "relative" }}>
-                  <input
-                    type="color"
-                    value={p.color}
-                    onChange={(e) => {
-                      const newP = [...data.participants];
-                      newP[idx].color = e.target.value;
-                      setData({ ...data, participants: newP });
-                    }}
-                    style={{
+              <div
+                key={p.id}
+                style={{ display: "flex", gap: "8px", alignItems: "center" }}
+              >
+                <input
+                  type="color"
+                  value={p.color}
+                  onChange={(e) => {
+                    const newP = [...data.participants];
+                    newP[idx].color = e.target.value;
+                    setData({ ...data, participants: newP });
+                  }}
+                  style={
+                    {
                       width: "40px",
                       height: "40px",
                       borderRadius: "50%",
                       border: "none",
                       padding: "0",
                       cursor: "pointer",
-                      boxSizing: "border-box",
-                    }}
-                  />
-                </div>
+                      clipPath: "circle(50%)",
+                    } as React.CSSProperties
+                  }
+                />
                 <input
                   style={{
                     flex: 1,
@@ -288,7 +354,7 @@ export function CreateRitualForm({
                       setData({
                         ...data,
                         participants: data.participants.filter(
-                          (_, i) => i !== idx
+                          (_, i) => i !== idx,
                         ),
                       })
                     }
@@ -342,8 +408,16 @@ export function CreateRitualForm({
 
         {/* Step 3: Questions */}
         {step === 3 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: "8px" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <p
+              style={{
+                fontSize: "14px",
+                color: "#6b7280",
+                marginBottom: "8px",
+              }}
+            >
               Quelles questions allez-vous noter ?
             </p>
             {data.questions.map((q, idx) => (
@@ -352,13 +426,19 @@ export function CreateRitualForm({
                 style={{
                   display: "flex",
                   gap: "8px",
-                  alignItems: "center",
                   backgroundColor: "#f9fafb",
-                  padding: "8px",
+                  padding: "12px",
                   borderRadius: "8px",
                 }}
               >
-                <div style={{ display: "flex", flexDirection: "column", gap: "4px", color: "#9ca3af" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                    color: "#9ca3af",
+                  }}
+                >
                   {idx > 0 && (
                     <button
                       onClick={() => {
@@ -394,23 +474,55 @@ export function CreateRitualForm({
                     </button>
                   )}
                 </div>
-                <input
+                <div
                   style={{
                     flex: 1,
-                    backgroundColor: "transparent",
-                    border: "none",
-                    fontWeight: "500",
-                    fontSize: "14px",
-                    outline: "none",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
                   }}
-                  placeholder="Texte de la question..."
-                  value={q.text}
-                  onChange={(e) => {
-                    const newQ = [...data.questions];
-                    newQ[idx].text = e.target.value;
-                    setData({ ...data, questions: newQ });
-                  }}
-                />
+                >
+                  <input
+                    style={{
+                      width: "100%",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      fontWeight: "500",
+                      fontSize: "14px",
+                      outline: "none",
+                      boxSizing: "border-box",
+                    }}
+                    placeholder="Texte de la question..."
+                    value={q.text}
+                    onChange={(e) => {
+                      const newQ = [...data.questions];
+                      newQ[idx].text = e.target.value;
+                      setData({ ...data, questions: newQ });
+                    }}
+                  />
+                  <textarea
+                    style={{
+                      width: "100%",
+                      backgroundColor: "white",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "4px",
+                      padding: "8px",
+                      fontSize: "12px",
+                      fontFamily: "inherit",
+                      outline: "none",
+                      resize: "vertical",
+                      minHeight: "60px",
+                      boxSizing: "border-box",
+                    }}
+                    placeholder="Détails optionnels..."
+                    value={q.details || ""}
+                    onChange={(e) => {
+                      const newQ = [...data.questions];
+                      newQ[idx].details = e.target.value || undefined;
+                      setData({ ...data, questions: newQ });
+                    }}
+                  />
+                </div>
                 <button
                   onClick={() =>
                     setData({
@@ -424,6 +536,7 @@ export function CreateRitualForm({
                     background: "none",
                     border: "none",
                     cursor: "pointer",
+                    alignSelf: "flex-start",
                   }}
                 >
                   <Trash2 size={16} />

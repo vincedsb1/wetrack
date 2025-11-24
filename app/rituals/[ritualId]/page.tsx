@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useRitualsStore } from "@/store/rituals.store";
 import { useUIStore } from "@/store/ui.store";
 import { formatDate } from "@/lib/date";
 import { LineChartPanel } from "@/features/charts/components/LineChart";
 import { useChartData, useChartLines } from "@/features/charts/hooks/useChartData";
+import { Header } from "@/features/layout/components/Header";
 
 export default function RitualDetailPage() {
   const params = useParams();
@@ -89,35 +90,22 @@ export default function RitualDetailPage() {
       margin: "0 auto",
     }}>
       {/* Header */}
+      <Header showSettings={false} />
+
+      {/* Ritual Info */}
       <div style={{
-        padding: "16px",
+        padding: "16px 24px",
         borderBottom: "1px solid #e5e7eb",
+        backgroundColor: "white",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        position: "sticky",
-        top: 0,
-        backgroundColor: "white",
-        zIndex: 20,
       }}>
-        <button
-          onClick={() => router.back()}
-          style={{
-            padding: "8px",
-            marginLeft: "-8px",
-            backgroundColor: "transparent",
-            border: "none",
-            cursor: "pointer",
-            color: "#4b5563",
-          }}
-        >
-          <ChevronLeft />
-        </button>
-        <div style={{ textAlign: "center" }}>
+        <div>
           <h2 style={{
             fontWeight: "bold",
             fontSize: "18px",
-            margin: 0,
+            margin: "0 0 4px 0",
             color: "#111827",
           }}>
             {ritual.title}
@@ -125,7 +113,7 @@ export default function RitualDetailPage() {
           <p style={{
             fontSize: "12px",
             color: "#6b7280",
-            margin: "4px 0 0 0",
+            margin: 0,
           }}>
             {ritual.frequency} • Échelle /{ritual.scale}
           </p>
@@ -135,7 +123,6 @@ export default function RitualDetailPage() {
           disabled={loading}
           style={{
             padding: "8px",
-            marginRight: "-8px",
             backgroundColor: "transparent",
             border: "none",
             cursor: loading ? "not-allowed" : "pointer",

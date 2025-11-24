@@ -22,7 +22,7 @@ interface RitualsState {
 
 export const useRitualsStore = create<RitualsState>((set, get) => ({
   rituals: [],
-  loading: true,
+  loading: false,
   error: null,
 
   loadRituals: async () => {
@@ -40,30 +40,33 @@ export const useRitualsStore = create<RitualsState>((set, get) => ({
 
   createRitual: async (ritual: Ritual) => {
     try {
+      set({ loading: true, error: null });
       await DB.save(ritual);
       const updated = [...get().rituals, ritual];
       updated.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-      set({ rituals: updated });
+      set({ rituals: updated, loading: false });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erreur lors de la création";
-      set({ error: message });
+      set({ error: message, loading: false });
       throw err;
     }
   },
 
   deleteRitual: async (id: string) => {
     try {
+      set({ loading: true, error: null });
       await DB.delete(id);
-      set({ rituals: get().rituals.filter((r) => r.id !== id) });
+      set({ rituals: get().rituals.filter((r) => r.id !== id), loading: false });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erreur lors de la suppression";
-      set({ error: message });
+      set({ error: message, loading: false });
       throw err;
     }
   },
 
   addEntry: async (ritualId: string, entry: Entry) => {
     try {
+      set({ loading: true, error: null });
       const ritual = get().rituals.find((r) => r.id === ritualId);
       if (!ritual) throw new Error("Rituel non trouvé");
 
@@ -76,16 +79,17 @@ export const useRitualsStore = create<RitualsState>((set, get) => ({
       await DB.save(updated);
       const rituals = get().rituals.map((r) => (r.id === ritualId ? updated : r));
       rituals.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-      set({ rituals });
+      set({ rituals, loading: false });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erreur lors de l'ajout d'entrée";
-      set({ error: message });
+      set({ error: message, loading: false });
       throw err;
     }
   },
 
   deleteEntry: async (ritualId: string, entryId: string) => {
     try {
+      set({ loading: true, error: null });
       const ritual = get().rituals.find((r) => r.id === ritualId);
       if (!ritual) throw new Error("Rituel non trouvé");
 
@@ -97,24 +101,25 @@ export const useRitualsStore = create<RitualsState>((set, get) => ({
 
       await DB.save(updated);
       const rituals = get().rituals.map((r) => (r.id === ritualId ? updated : r));
-      set({ rituals });
+      set({ rituals, loading: false });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erreur lors de la suppression";
-      set({ error: message });
+      set({ error: message, loading: false });
       throw err;
     }
   },
 
   importRituals: async (newRituals: Ritual[]) => {
     try {
+      set({ loading: true, error: null });
       const current = get().rituals;
       const merged = mergeRituals(current, newRituals);
       await DB.importBulk(merged);
       merged.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-      set({ rituals: merged });
+      set({ rituals: merged, loading: false });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Erreur lors de l'import";
-      set({ error: message });
+      set({ error: message, loading: false });
       throw err;
     }
   },
