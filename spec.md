@@ -723,3 +723,4 @@ Components de création, wizard, historique, graphes
 Import/export JSON
 
 Styles mobile clean
+test
