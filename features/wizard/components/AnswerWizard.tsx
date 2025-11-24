@@ -187,13 +187,21 @@ export function AnswerWizard({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           padding: "24px",
         }}
       >
+        {/* Question Block - min 1/3 height, aligned to top */}
         <div
           id="answerWizardQuestionContainer"
-          style={{ marginBottom: "24px", width: "100%", textAlign: "left" }}
+          style={{
+            minHeight: "33.33%",
+            width: "100%",
+            textAlign: "left",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
         >
           <div id="answerWizardQuestionHeader" style={{ marginBottom: "12px" }}>
             <span
@@ -228,11 +236,28 @@ export function AnswerWizard({
                 margin: "0 0 16px 0",
                 fontStyle: "italic",
                 lineHeight: 1.4,
+                whiteSpace: "pre-wrap",
+                wordWrap: "break-word",
               }}
             >
               {currentStep.question.details}
             </p>
           )}
+        </div>
+
+        {/* Participant + Rating Block */}
+        <div
+          id="answerWizardAnswerBlock"
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "24px",
+            width: "100%",
+          }}
+        >
           <span
             id="answerWizardParticipantBadge"
             style={{
@@ -244,7 +269,6 @@ export function AnswerWizard({
               borderRadius: "9999px",
               fontSize: "14px",
               fontWeight: "bold",
-              marginTop: "8px",
               color: "white",
               boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
               backgroundColor: currentStep.participant.color,
@@ -252,46 +276,46 @@ export function AnswerWizard({
           >
             {currentStep.participant.name}
           </span>
-        </div>
 
-        {/* Rating Grid */}
-        <div
-          id="answerWizardRatingGrid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${Math.min(5, ritual.scale)}, 1fr)`,
-            gap: "12px",
-            width: "100%",
-            maxWidth: "320px",
-          }}
-        >
-          {Array.from({ length: ritual.scale }, (_, i) => i + 1).map((val) => (
-            <button
-              id={`answerWizardRatingButton${val}`}
-              key={val}
-              onClick={() => handleValueSelect(val)}
-              disabled={isLoading}
-              style={{
-                aspectRatio: "1",
-                borderRadius: "12px",
-                fontSize: "18px",
-                fontWeight: "bold",
-                borderTop: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
-                borderRight: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
-                borderBottom: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
-                borderLeft: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
-                transition: "all 0.2s",
-                opacity: isLoading ? 0.5 : 1,
-                cursor: isLoading ? "not-allowed" : "pointer",
-                backgroundColor: currentValue === val ? "#2563eb" : "white",
-                color: currentValue === val ? "white" : "#4b5563",
-                transform: currentValue === val ? "scale(1.1)" : "scale(1)",
-                boxShadow: currentValue === val ? "0 10px 15px -3px rgba(0, 0, 0, 0.1)" : "none",
-              }}
-            >
-              {val}
-            </button>
-          ))}
+          {/* Rating Grid */}
+          <div
+            id="answerWizardRatingGrid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${Math.min(5, ritual.scale)}, 1fr)`,
+              gap: "12px",
+              width: "100%",
+              maxWidth: "320px",
+            }}
+          >
+            {Array.from({ length: ritual.scale }, (_, i) => i + 1).map((val) => (
+              <button
+                id={`answerWizardRatingButton${val}`}
+                key={val}
+                onClick={() => handleValueSelect(val)}
+                disabled={isLoading}
+                style={{
+                  aspectRatio: "1",
+                  borderRadius: "12px",
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  borderTop: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                  borderRight: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                  borderBottom: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                  borderLeft: currentValue === val ? "2px solid #2563eb" : "2px solid #e5e7eb",
+                  transition: "all 0.2s",
+                  opacity: isLoading ? 0.5 : 1,
+                  cursor: isLoading ? "not-allowed" : "pointer",
+                  backgroundColor: currentValue === val ? "#2563eb" : "white",
+                  color: currentValue === val ? "white" : "#4b5563",
+                  transform: currentValue === val ? "scale(1.1)" : "scale(1)",
+                  boxShadow: currentValue === val ? "0 10px 15px -3px rgba(0, 0, 0, 0.1)" : "none",
+                }}
+              >
+                {val}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
