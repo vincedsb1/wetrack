@@ -226,10 +226,12 @@ export default function RitualDetailPage() {
               </p>
             )}
             {[...ritual.entries].reverse().map((entry) => {
-              const totalAvg = (
-                entry.responses.reduce((acc, r) => acc + r.value, 0) /
-                entry.responses.length
-              ).toFixed(1);
+              const totalAvg = entry.responses.length > 0
+                ? (
+                  entry.responses.reduce((acc, r) => acc + r.value, 0) /
+                  entry.responses.length
+                ).toFixed(1)
+                : "0.0";
 
               return (
                 <div

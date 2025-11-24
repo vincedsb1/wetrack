@@ -44,7 +44,7 @@ export function AnswerWizard({
   const progress = (currentStepIndex / steps.length) * 100;
 
   const handleValueSelect = (val: number) => {
-    const key = `${currentStep.question.id}-${currentStep.participant.id}`;
+    const key = `q_${currentStep.question.id}_p_${currentStep.participant.id}`;
     const newResponses = { ...responses, [key]: val };
     setResponses(newResponses);
 
@@ -62,7 +62,9 @@ export function AnswerWizard({
   const finalize = async (finalResponses: Record<string, number>) => {
     const responseArray: Response[] = Object.entries(finalResponses).map(
       ([key, val]) => {
-        const [qId, pId] = key.split("-");
+        const match = key.match(/^q_(.+)_p_(.+)$/);
+        if (!match) throw new Error(`Invalid response key format: ${key}`);
+        const [, qId, pId] = match;
         return { questionId: qId, participantId: pId, value: val };
       }
     );
@@ -77,7 +79,7 @@ export function AnswerWizard({
     await onFinish(entry);
   };
 
-  const currentKey = `${currentStep.question.id}-${currentStep.participant.id}`;
+  const currentKey = `q_${currentStep.question.id}_p_${currentStep.participant.id}`;
   const currentValue = responses[currentKey];
 
   return (
