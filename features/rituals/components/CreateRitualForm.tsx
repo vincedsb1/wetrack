@@ -51,6 +51,10 @@ export function CreateRitualForm({
 
   const handleNext = async () => {
     if (!validateStep()) {
+      console.error("Validation failed", {
+        step,
+        data,
+      });
       alert("Veuillez remplir correctement les champs.");
       return;
     }
@@ -485,14 +489,16 @@ export function CreateRitualForm({
                   <input
                     style={{
                       width: "100%",
-                      backgroundColor: "transparent",
-                      border: "none",
+                      backgroundColor: "white",
+                      border: "1px solid #d1d5db",
+                      borderRadius: "6px",
+                      padding: "8px",
                       fontWeight: "500",
                       fontSize: "14px",
                       outline: "none",
                       boxSizing: "border-box",
                     }}
-                    placeholder="Texte de la question..."
+                    placeholder="Texte de la question (obligatoire)"
                     value={q.text}
                     onChange={(e) => {
                       const newQ = [...data.questions];

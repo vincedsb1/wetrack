@@ -9,6 +9,7 @@ import type { Ritual, Entry } from "@/lib/types";
 interface ChartDataPoint {
   entryId: string;
   date: string;
+  index: number;
   [key: string]: string | number;
 }
 
@@ -24,8 +25,12 @@ export const useChartData = (
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
 
-    return sortedEntries.map((entry) => {
-      const point: ChartDataPoint = { entryId: entry.id, date: entry.createdAt };
+    return sortedEntries.map((entry, idx) => {
+      const point: ChartDataPoint = { 
+        entryId: entry.id, 
+        date: entry.createdAt,
+        index: idx + 1 
+      };
 
       if (graphMode === 1) {
         // Mode 1: Per person, specific question
