@@ -21,6 +21,7 @@ interface LineProps {
 interface ChartDataPoint {
   entryId: string;
   date: string;
+  index: number;
   [key: string]: string | number;
 }
 
@@ -59,9 +60,8 @@ export function LineChartPanel({
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
-            dataKey="entryId"
+            dataKey="index"
             tick={{ fontSize: 12 }}
-            label={{ value: "Entrées", position: "insideBottomRight", offset: -5 }}
           />
           <YAxis
             domain={[0, scale]}
